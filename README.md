@@ -1,1 +1,5 @@
-thealexhong.github.io/bark/
+MEAN Stack
+
+```
+mongod & npm start
+```
