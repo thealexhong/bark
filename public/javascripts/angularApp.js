@@ -24,11 +24,11 @@ angular.module('bark', ['ui.router'])
                     ]
                 }
             })
-            .state('posts'.
+            .state('posts',
             {
                 url: '/posts/{id}',
                 templateUrl: 'templates/posts.html',
-                controller: 'PostsCtrl'
+                controller: 'PostsCtrl',
                 resolve:
                 {
                     post: ['$stateParams', 'posts',
@@ -55,23 +55,23 @@ angular.module('bark', ['ui.router'])
                 {
                     angular.copy(data, o.posts);
                 });
-            }
+            };
 
             o.get = function(id)
             {
-                return $http.get('/posts' + id).then(function(res)
+                return $http.get('/posts/' + id).then(function(res)
                 {
                     return res.data;
                 });
-            }
+            };
 
             o.create = function(post)
             {
-                return $http.post('/posts' + id).then(function(data)
+                return $http.post('/posts', post).success(function(data)
                 {
                     return o.posts.push(data);
                 });
-            }
+            };
 
             o.upvote = function(post)
             {
@@ -79,12 +79,12 @@ angular.module('bark', ['ui.router'])
                 {
                     post.upvotes += 1;
                 });
-            }
+            };
 
             o.addComment = function(id, comment)
             {
                 return $http.post('/posts/' + id + '/comments', comment);
-            }
+            };
 
             o.upvoteComment = function(post, comment)
             {
@@ -92,7 +92,7 @@ angular.module('bark', ['ui.router'])
                 {
                     comment.upvotes += 1;
                 });
-            }
+            };
 
             return o;
         }
@@ -116,12 +116,12 @@ angular.module('bark', ['ui.router'])
 
             $scope.incrementUpvotes = function(post)
             {
-                post.upvotes(post);
+                posts.upvote(post);
             };
 
             $scope.posts = posts.posts;
         }
-    ]);
+    ])
     .controller('PostsCtrl', [
         '$scope',
         'posts',
@@ -131,7 +131,7 @@ angular.module('bark', ['ui.router'])
             $scope.post = post;
             $scope.addComment = function()
             {
-                if($scope.body === '') { return; }
+                if($scope.body === '') { return; };
                 posts.addComment(post._id, 
                 {
                     body: $scope.body,
